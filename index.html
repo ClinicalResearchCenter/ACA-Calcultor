@@ -1,117 +1,98 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Paid Clinical Trial for Opioid Use Disorder</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f0f4f8;
-      margin: 0;
-      padding: 0;
-      color: #1a202c;
-    }
-    .hero {
-      background: url('https://images.unsplash.com/photo-1588776814546-ec7e2f4f13d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;
-      height: 300px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ffffff;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.4);
-    }
-    .hero h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-    }
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 2rem;
-      background-color: #ffffff;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-      border-radius: 16px;
-      margin-top: -80px;
-      position: relative;
-      z-index: 2;
-    }
-    h2 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      color: #2b6cb0;
-    }
-    p, li {
-      font-size: 1rem;
-      margin-bottom: 1rem;
-    }
-    ul {
-      list-style-type: disc;
-      padding-left: 1.25rem;
-    }
-    .highlight {
-      font-weight: 600;
-      color: #2b6cb0;
-    }
-    .cta {
-      margin-top: 2rem;
-      text-align: center;
-    }
-    .cta a {
-      text-decoration: none;
-      background-color: #2b6cb0;
-      color: #ffffff;
-      padding: 0.75rem 1.5rem;
-      font-weight: 600;
-      border-radius: 8px;
-      transition: background-color 0.2s ease;
-    }
-    .cta a:hover {
-      background-color: #2c5282;
-    }
-    .footer {
-      text-align: center;
-      margin-top: 4rem;
-      font-size: 0.875rem;
-      color: #718096;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACA APTC Repayment Calculator</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="hero">
-    <h1>Join a Paid Clinical Trial for Opioid Recovery</h1>
+  <div class="app-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">GitHub Pages Ready</p>
+        <h1>ACA APTC Repayment Calculator</h1>
+        <p class="subhead">
+          Estimate allowed Premium Tax Credit and potential excess APTC repayment for
+          <strong>Plan Year 2026</strong> using current IRS and CMS rules.
+        </p>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="card">
+        <h2>Inputs</h2>
+        <form id="calc-form" class="form-grid">
+          <label>
+            Coverage year
+            <select id="coverageYear">
+              <option value="2026" selected>2026</option>
+            </select>
+          </label>
+
+          <label>
+            Region used for poverty guideline
+            <select id="region">
+              <option value="contiguous" selected>48 states + DC</option>
+              <option value="alaska">Alaska</option>
+              <option value="hawaii">Hawaii</option>
+            </select>
+          </label>
+
+          <label>
+            Household size
+            <input id="householdSize" type="number" min="1" step="1" value="3" required />
+          </label>
+
+          <label>
+            Filing status
+            <select id="filingStatus">
+              <option value="single">Single</option>
+              <option value="other" selected>Married filing jointly / other</option>
+            </select>
+          </label>
+
+          <label>
+            Actual household MAGI
+            <input id="householdIncome" type="number" min="0" step="0.01" value="90000" required />
+          </label>
+
+          <label>
+            Total APTC received for the year
+            <input id="annualAptc" type="number" min="0" step="0.01" value="28812" required />
+          </label>
+
+          <label>
+            Annual benchmark premium (SLCSP total)
+            <input id="annualBenchmarkPremium" type="number" min="0" step="0.01" value="24000" required />
+          </label>
+
+          <label>
+            Months covered
+            <input id="monthsCovered" type="number" min="1" max="12" step="1" value="12" required />
+          </label>
+
+          <label class="full-width checkbox-row">
+            <input id="below100Exception" type="checkbox" />
+            Treat household as eligible for the below 100% FPL exception
+          </label>
+
+          <button type="submit">Calculate</button>
+        </form>
+
+        <div class="notes">
+          <p><strong>What to enter for annual benchmark premium:</strong> use the yearly total of the benchmark second-lowest-cost silver plan, usually built from Form 1095-A data.</p>
+          <p><strong>Important:</strong> this tool estimates federal PTC reconciliation only. It does not handle shared policy allocations, self-employed health insurance deduction circular calculations, CSR rules, or special immigration edge cases.</p>
+        </div>
+      </section>
+
+      <section class="card results-card">
+        <h2>Results</h2>
+        <div id="results" class="results"></div>
+      </section>
+    </main>
   </div>
 
-  <div class="container">
-    <h2>Are You Tapering Off Suboxone?</h2>
-    <p>
-      If you’re currently tapering off or recently completed a medically supervised withdrawal from <strong>Suboxone (buprenorphine)</strong>, you may be eligible to participate in a <span class="highlight">paid clinical trial</span> testing a new non-opioid treatment for opioid use disorder.
-    </p>
-
-    <h2>What You Receive</h2>
-    <ul>
-      <li>Free care and investigational medication</li>
-      <li>Compensation for time and travel</li>
-      <li>Weekly clinical support and visits</li>
-    </ul>
-
-    <h2>Who Can Join?</h2>
-    <ul>
-      <li>Ages 18–65 with moderate or severe opioid use disorder</li>
-      <li>Currently tapering or completed a taper within the last 3 weeks</li>
-      <li>Not using injection drugs more than twice weekly</li>
-      <li>Willing to attend weekly visits for 12 weeks</li>
-    </ul>
-
-    <div class="cta">
-      <a href="https://forms.gle/UY5TtaoLCnEX1qCL9" target="_blank">See If You Qualify</a>
-    </div>
-  </div>
-
-  <div class="footer">
-    Clinical Research Coordinators of Florida | All rights reserved
-  </div>
+  <script src="app.js"></script>
 </body>
 </html>
